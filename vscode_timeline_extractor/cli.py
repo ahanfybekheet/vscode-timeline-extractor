@@ -294,7 +294,7 @@ def cmd_export(extractor: VSCodeTimelineExtractor, args) -> int:
 
     result = extractor.export_file_version(
         file_path=args.file,
-        output_path=args.output,
+        output_path=output_path,
         version_index=args.version,
     )
     
