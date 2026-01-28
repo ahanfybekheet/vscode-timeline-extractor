@@ -285,6 +285,13 @@ def cmd_versions(extractor: VSCodeTimelineExtractor, args) -> int:
 
 def cmd_export(extractor: VSCodeTimelineExtractor, args) -> int:
     """Handle the 'export' command."""
+
+    # Generate default output path if not provided
+    output_path = args.output
+    if output_path is None:
+        file_basename = Path(args.file).name
+        output_path = str(Path("output") / file_basename)
+
     result = extractor.export_file_version(
         file_path=args.file,
         output_path=args.output,
