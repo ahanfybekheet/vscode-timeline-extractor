@@ -158,7 +158,7 @@ def _add_export_parser(subparsers) -> None:
     )
     parser.add_argument(
         "-o", "--output",
-        required=True,
+        required=False,
         help="Output file path",
     )
     parser.add_argument(
