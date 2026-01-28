@@ -8,6 +8,7 @@ for the CLI application.
 import argparse
 import json
 import sys
+from pathlib import Path
 from typing import Optional
 
 from .extractor import VSCodeTimelineExtractor
@@ -107,8 +108,9 @@ def _add_reconstruct_parser(subparsers) -> None:
     )
     parser.add_argument(
         "-o", "--output",
-        required=True,
-        help="Output directory path",
+        required=False,
+        default=None,
+        help="Output directory path (default: output/{source_dirname})",
     )
     parser.add_argument(
         "--no-metadata",
@@ -214,9 +216,15 @@ def cmd_reconstruct(extractor: VSCodeTimelineExtractor, args) -> int:
             print(f"✗ Error: {e}")
             return 1
     
+    # Generate default output path if not provided
+    output_dir = args.output
+    if output_dir is None:
+        source_basename = Path(args.source).name
+        output_dir = str(Path("output") / source_basename)
+    
     result = extractor.reconstruct_directory(
         source_directory=args.source,
-        output_directory=args.output,
+        output_directory=output_dir,
         export_metadata=not args.no_metadata,
         at_timestamp=at_timestamp,
     )

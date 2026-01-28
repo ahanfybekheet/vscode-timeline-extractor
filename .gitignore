@@ -71,5 +71,6 @@ venv.bak/
 
 # Project specific
 History/
+output/
 recovered*/
 *.log
