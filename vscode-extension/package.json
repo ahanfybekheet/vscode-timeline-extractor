@@ -1,0 +1,187 @@
+{
+  "name": "vscode-timeline-extractor",
+  "displayName": "Timeline Extractor",
+  "description": "Extract and reconstruct files from VS Code's Timeline / local history",
+  "version": "0.1.0",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "timeline",
+    "history",
+    "backup",
+    "recovery",
+    "local history"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "timelineExtractor.showInfo",
+        "title": "Timeline Extractor: Show Info",
+        "icon": "$(info)"
+      },
+      {
+        "command": "timelineExtractor.listFiles",
+        "title": "Timeline Extractor: List All Files"
+      },
+      {
+        "command": "timelineExtractor.listFilesInDirectory",
+        "title": "Timeline Extractor: List Files in Directory"
+      },
+      {
+        "command": "timelineExtractor.reconstructDirectory",
+        "title": "Timeline Extractor: Reconstruct Directory"
+      },
+      {
+        "command": "timelineExtractor.reconstructDirectoryAtTime",
+        "title": "Timeline Extractor: Reconstruct Directory at Time"
+      },
+      {
+        "command": "timelineExtractor.showVersions",
+        "title": "Timeline Extractor: Show File Versions"
+      },
+      {
+        "command": "timelineExtractor.exportVersion",
+        "title": "Timeline Extractor: Export File Version"
+      },
+      {
+        "command": "timelineExtractor.refresh",
+        "title": "Timeline Extractor: Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "timelineExtractor.openVersion",
+        "title": "Open Version",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "timelineExtractor.compareWithCurrent",
+        "title": "Compare with Current",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "timelineExtractor.restoreVersion",
+        "title": "Restore Version",
+        "icon": "$(history)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "timeline-extractor",
+          "title": "Timeline Extractor",
+          "icon": "$(history)"
+        }
+      ]
+    },
+    "views": {
+      "timeline-extractor": [
+        {
+          "id": "timelineExtractorFiles",
+          "name": "Timeline Files"
+        },
+        {
+          "id": "timelineExtractorVersions",
+          "name": "File Versions"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "timelineExtractor.refresh",
+          "when": "view == timelineExtractorFiles",
+          "group": "navigation"
+        },
+        {
+          "command": "timelineExtractor.showInfo",
+          "when": "view == timelineExtractorFiles",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "timelineExtractor.showVersions",
+          "when": "view == timelineExtractorFiles && viewItem == timelineFile",
+          "group": "inline"
+        },
+        {
+          "command": "timelineExtractor.openVersion",
+          "when": "view == timelineExtractorVersions && viewItem == fileVersion",
+          "group": "inline@1"
+        },
+        {
+          "command": "timelineExtractor.compareWithCurrent",
+          "when": "view == timelineExtractorVersions && viewItem == fileVersion",
+          "group": "inline@2"
+        },
+        {
+          "command": "timelineExtractor.restoreVersion",
+          "when": "view == timelineExtractorVersions && viewItem == fileVersion",
+          "group": "inline@3"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "timelineExtractor.reconstructDirectory",
+          "when": "explorerResourceIsFolder",
+          "group": "7_modification"
+        },
+        {
+          "command": "timelineExtractor.showVersions",
+          "when": "!explorerResourceIsFolder",
+          "group": "7_modification"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Timeline Extractor",
+      "properties": {
+        "timelineExtractor.customTimelinePath": {
+          "type": "string",
+          "default": "",
+          "description": "Custom path to VS Code's timeline directory. Leave empty for auto-detection."
+        },
+        "timelineExtractor.exportMetadata": {
+          "type": "boolean",
+          "default": true,
+          "description": "Export metadata JSON file when reconstructing directories."
+        },
+        "timelineExtractor.defaultOutputDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "Default output directory for reconstructed files. Leave empty to prompt each time."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.2",
+    "@vscode/vsce": "^2.22.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/vscode-timeline-extractor"
+  },
+  "license": "MIT"
+}
